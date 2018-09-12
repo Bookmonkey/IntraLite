@@ -12,7 +12,7 @@
       
       <div class="group">
         <label for="name">Link title</label>
-        <input type="text" v-model="options.selectedLink.name" />
+        <input type="text" v-model="options.selectedLink.link_name" />
       </div>
 
       <div class="group">

@@ -17,7 +17,7 @@
       <div class="link" v-for="(link, index) in links" :key="index">
         <div class="content-between">
           <a :href="link.link" target="_blank">
-            {{ link.name }}
+            {{ link.link_name }}
           </a>
           <div class="btn" @click="openModal(link, 'edit')">
             <i class="fas fa-edit"></i>
@@ -42,7 +42,7 @@
 // @ is an alias to /src
 import Modal from "@/components/Modal.vue";
 
-import { mapState } from 'vuex';
+import { mapState, mapMutations } from 'vuex';
 export default {
   name: "home",
   components: {
@@ -52,7 +52,7 @@ export default {
     return {
       linkTemplate: {
         id: 0,
-        name: '',
+        link_name: '',
         link: '',
         visible: false,
       },
@@ -63,7 +63,11 @@ export default {
       },
     };
   },
+  created() {
+    this.getLinks();
+  },
   methods: {
+    ...mapMutations(['getLinks']),
     openModal(link, state) {
 
       this.modalOptions.selectedLink = link;
