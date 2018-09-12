@@ -1,0 +1,19 @@
+  .group {
+    margin-bottom: 8px;
+
+    label {
+      font-weight: 700;
+    }
+
+    input {
+      width: 100%;
+      border: none;
+      outline-width: 2px;
+      display: block;
+      font-size: 1rem;
+      margin-top: 2px;
+      padding: 12px;
+      box-shadow: 1px 1px 4px 0px rgba(0, 0, 0, 0.2);
+      box-sizing: border-box;
+    }
+  }
