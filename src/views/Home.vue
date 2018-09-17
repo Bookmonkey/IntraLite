@@ -1,29 +1,30 @@
 <template>
   <div class="home">
-    <div class="overlay"></div>
+    <div class="overlay" :class="getTheme()"></div>
     <div class="content">
 
-      <div class="content-between">
+      <div class="content-between mb-1">
         <div class="title">Quick links</div>
-
-        <span class="link-add" @click="openModal(modalOptions.selectedLink, 'add')">
+        <div class="btn blue" @click="openModal(modalOptions.selectedLink, 'add')" v-if="editState">
           Add
-        </span>
+        </div>
       </div>
 
       <div class="alert" v-if="links.length === 0">
         No links to show
       </div>
-      <div class="link" v-for="(link, index) in links" :key="index">
-        <div class="content-between">
-          <a :href="link.link" target="_blank">
-            {{ link.link_name }}
-          </a>
-          <div class="btn" @click="openModal(link, 'edit')">
-            <i class="fas fa-edit"></i>
+      <div class="link-container">
+        <div class="link" v-for="(link, index) in links" :key="index">
+          <div class="content-between">
+            <a :href="link.link" target="_blank">
+              {{ link.link_name }}
+            </a>
+            <div class="btn" @click="openModal(link, 'edit')" v-if="editState">
+              <i class="fas fa-edit"></i>
+            </div>
           </div>
-        </div>
-      </div> 
+        </div> 
+      </div>
 
     </div>
     <modal :options="modalOptions" v-if="modalOptions.visible"></modal>
@@ -42,7 +43,7 @@
 // @ is an alias to /src
 import Modal from "@/components/Modal.vue";
 
-import { mapState, mapMutations } from 'vuex';
+import { mapState, mapMutations, mapGetters } from 'vuex';
 export default {
   name: "home",
   components: {
@@ -61,15 +62,28 @@ export default {
         visible: false,
         state: 'add',
       },
+      editState: false,
     };
   },
   created() {
     this.getLinks();
+
+    let setTheme = localStorage.getItem('theme');
+
+    console.log(setTheme);
+    if(setTheme) {
+      this.config.theme = setTheme;
+    }
+    else {
+      this.config.theme = 'default';
+    }
+
+    // for internal usecase. Will actually implement a token system
+    if(this.$route.query.edit) this.editState = true;
   },
   methods: {
     ...mapMutations(['getLinks']),
     openModal(link, state) {
-
       this.modalOptions.selectedLink = link;
       this.modalOptions.state  = state;
       if(state === 'add') {
@@ -77,16 +91,27 @@ export default {
       }
 
       this.modalOptions.visible = true;
+    },
+    getTheme () {
+      return this.config.theme;
     }
   },
-  computed: mapState({
-    links: state => state.links
-  })
+  computed: {
+    ...mapGetters(['config']),
+    ...mapState({
+      links: state => state.links,
+    })
+  },
 };
 </script>
 
 <style lang="scss" scoped>
 @import '../assets/global';
+
+.home {
+  display: flex;
+  justify-content: space-around;
+}
 
 .overlay {
   position: absolute;
@@ -94,29 +119,36 @@ export default {
   left: 0;
   width: 100vw;
   height: 100vh;
-  background: linear-gradient(90deg, #0099FF 0%, #6610f2 100%);
+
+  &.theme-default {
+    background: #f5f7f9;
+  }
+  &.theme-blue {
+    background:#0099FF;
+  }
+
+  &.theme-green {
+    background:#66bb6a;
+  }
+
+  &.theme-sea-blue {
+    // background: linear-gradient(90deg, #0099FF 0%, #6610f2 100%);
+  }
 }
 
 .content {
   position: relative; 
   padding: 12px;
-  margin: 0 auto; 
   width: 40vw; 
-  background:white;
-  border-radius: 5px;
+  margin-top:14px;
+  background:#fff;
   box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.2);
 }
 
-.link-add {
-  background: $blue;
-  color: white;
-  width: 60px;
-  text-align: center;
-  padding: 6px;
-  line-height: 1.4;
-  cursor: pointer;
+.link-container {
+  max-height: 75vh;
+  overflow-y: auto;
 }
-
 .footer {
   position: absolute;
   bottom:0;

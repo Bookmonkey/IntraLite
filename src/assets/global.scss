@@ -1,17 +1,20 @@
 // Colours
 
-$blue: rgb(26, 122, 255);
+$blue: #409EFF;
 $lightblue: #d1e4ff;
-$green: #02B875;
-$red: #F05D84;
+$green: #67C23A;
+$red: #F56C6C;
 
 
 @import 'alert';
-
 @import 'form';
 
-#app{
-    font-family: "Roboto", Helvetica, Arial, sans-serif;
+body, html {
+  padding: 0;
+  margin: 0;
+}
+#app {
+  font-family: "Noto Sans", Helvetica, Arial, sans-serif;
 }
 
 .content-between {
@@ -22,44 +25,94 @@ $red: #F05D84;
 
 
 .link {
-  border: 1px solid lightgrey;
+  border: 1px solid #aaa;
   margin-bottom: 4px;
   display: block;
-  a { padding: 8px; }
+
+  a {
+    padding: 8px;
+    width: 100%;
+  }
 }
 
-a { text-decoration: none; color: $blue; }
+a {
+  text-decoration: none;
+  color: $blue;
+}
 
 .align-items-center {
-  display:flex;
-  align-items: center;
+  display: flex;
+  align-content: center;
 }
 
 .justify-content-end {
-  display:flex;
+  display: flex;
   justify-content: flex-end;
 }
 
 .title {
   font-size: 1.4rem;
-  margin-bottom:12px;
+  // margin-bottom: 12px;
 }
 
 
 $hoverBG: rgba(0, 0, 0, 0.3);
 
 .btn {
-  padding: 10px;
-  font-size: 1rem;
+  display: inline-block;
+  line-height: 1;
+  white-space: nowrap;
+  cursor: pointer;
+  background: #fff;
+  color: #606266;
+  -webkit-appearance: none;
+  text-align: center;
+  box-sizing: border-box;
+  // outline: none;
+  margin: 0;
+  transition: .1s;
+  font-weight: 500;
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  padding: 12px 20px;
+  font-size: 14px;
+  border-radius: 4px;
+
+  &.default {
+    border: 1px solid #dcdfe6;
+    border-color: #dcdfe6;
+
+    &:hover {
+      border: 1px solid #ddd;
+    }
+  }
+  &.blue {
+    background: $blue;
+    color: white;
+  }
+
   &.green {
     background: $green;
     color: white;
-    border: 2px solid rgba(0, 0, 0, 0.3);
+    // border: 2px solid rgba(0, 0, 0, 0.3);
   }
 
   &.red {
     background: $red;
     color: white;
-    border: 2px solid rgba(255, 255, 255, 0.3);
+    // border: 2px solid rgba(255, 255, 255, 0.3);
   }
+
+  &.round {
+      padding: 8px;
+      font-size: 1rem;
+      border-radius: 50%;
+      transition: all 0.2s ease-in;
+  }
+}
+
+
+.mb-1{
+  margin-bottom: 12px;
 }

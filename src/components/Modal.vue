@@ -1,32 +1,40 @@
 <template>
-  <div class="modal">
+  <transition name="modal-fade">
+    <div class="modal">
 
-    <div class="content">
-      <div class="content-between">
-        <h3>Edit link info</h3>
+      <div class="content">
+        <div class="content-between">
+          <h3>
+            <span v-if="options.state === 'edit'">Edit link info</span>
+            <span v-if="options.state === 'add'">Add link</span>
+          </h3>
 
-        <button class="close" @click="closeModal()">
-          <i class="fas fa-fw fa-times"></i>
-        </button>
-      </div>
-      
-      <div class="group">
-        <label for="name">Link title</label>
-        <input type="text" v-model="options.selectedLink.link_name" />
-      </div>
+          <button class="btn default round" @click="closeModal()">
+            <i class="fas fa-fw fa-times"></i>
+          </button>
+        </div>
+        
+        <div class="group">
+          <label for="name">Link title</label>
+          <input type="text" v-model="options.selectedLink.link_name" autofocus />
+        </div>
 
-      <div class="group">
-        <label for="link">Link</label>
-        <input type="text" v-model="options.selectedLink.link" />
-      </div>
-  
+        <div class="group">
+          <label for="link">Link</label>
+          <input type="url" v-model="options.selectedLink.link" />
+        </div>
+    
 
-      <div class="content-between">
-        <button class="btn red" @click="deleteLink(options.selectedLink.id)">Delete</button>
-        <button class="btn green" @click="saveLink()">Save</button>
+        <div class="content-between">
+          <div>
+
+            <button class="btn red"  v-if="options.state === 'edit'" @click="deleteLink(options.selectedLink.id)">Delete</button>
+          </div>
+          <button class="btn green" @click="saveLink()">Save</button>
+        </div>
       </div>
     </div>
-  </div>
+  </transition>
 </template>
 
 <script>
@@ -36,8 +44,17 @@ export default {
   props: ['options'],
   data() {
     return {
-
     }
+  },
+  created() {
+    document.addEventListener('keydown', event => {
+      if(event.keyCode === 27) {
+        this.closeModal();
+      }
+    })
+  },
+  beforeDestroy() {
+    document.removeEventListener('keydown');
   },
   methods: {
     ...mapMutations(['addLink', 'updateLink', 'deleteLink']),
@@ -47,7 +64,6 @@ export default {
     },
 
     saveLink() {
-      this.options.selectedLink.id = this.listLength;
       if(this.options.state === 'edit') {
         this.updateLink(this.options.selectedLink);
       }
@@ -68,6 +84,14 @@ export default {
 
 <style lang="scss" scoped>
   @import "../assets/global";
+  // * Enter and leave animations can use different */
+/* durations and timing functions.              */
+.modal-fade-enter-active, .modal-fade-leave-active {
+  transition: all .3s cubic-bezier(0.86, 0, 0.07, 1);
+}
+.modal-fade-enter, .modal-fade-leave-to {
+  opacity: 0;
+}
 
   $closeButtonColour: rgba(0, 0, 0, 0.1);
   h3 { margin: 0; }
@@ -85,23 +109,10 @@ export default {
       margin: 0 auto;
       margin-top: 32px;
       background: #fff;
-      width: 40vw;
+      width: 30vw;
       padding: 24px;
       box-shadow: 0px 0px 24px 0px rgba(0, 0, 0, 0.3);
     }
   }
-
-  button.close {
-    padding: 8px;
-    font-size: 1rem;
-    border:none;
-    outline: none;
-    border-radius: 50%;
-    border:1px solid $closeButtonColour;
-    transition: all 0.2s ease-in;
-
-    &:hover { background: $closeButtonColour; }
-  }
-
 
 </style>

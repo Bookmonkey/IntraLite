@@ -9,14 +9,37 @@ const LinksController = () => {
     res.status(200).send(results);
   });
 
-  router.post("/add", (req, res) => {
+  router.post("/add", async (req, res) => {
     let link = req.body.link;
-    db.addLink(link);
+    try {
+      let result = await db.addLink(link);
+      res.status(200).send(result);
+    } catch (error) {
+      console.error(error);
+    }
   });
 
-  router.put("/update/:id", (req, res) => {});
+  router.post("/update", async (req, res) => {
+    let link = req.body.link;
+    try {
+      await db.updateLink(link);
+      res.status(200).send("OK");
+    } catch (error) {
+      console.error(error);
+    }
 
-  router.delete("/delete/:id", (req, res) => {});
+
+  });
+
+  router.delete("/delete/:id", async (req, res) => {
+    let id = req.params.id;
+    try {
+      await db.deleteLinkById(id);
+      res.status(200).send("OK");
+    } catch (error) {
+      console.error(error);
+    }
+  });
 
   return router;
 }

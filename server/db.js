@@ -23,33 +23,55 @@ let query = (text, values) => {
       })
       .catch(e => {
         client.release();
-        console.error(e.stack);
+        throw e;
       });
   });
 };
 
 let db = () => {
-  let getLinks = async () => {
-    let { sql, params } = createQuery `SELECT * FROM link;`;
-    return await query(sql, params);
+  let getLinks = () => {
+    let { sql, params } = createQuery`SELECT * FROM link;`;
+    return query(sql, params);
   };
 
-  let addLink = async (link) => {
+  let addLink = link => {
+    // console.l
     let { sql, params } = createQuery`
       INSERT INTO link (link_name, link, is_external_link)
       VALUES(
-        ${link.name},
+        ${link.link_name},
         ${link.link},
         false
       );
     `;
 
-    return await query(sql, params);
+    return query(sql, params);
+  };
+
+  let updateLink = link => {
+    let { sql, params } = createQuery`
+      update link
+      set link_name = ${link.link_name},
+      link = ${link.link}
+      where id = ${link.id};
+    `;
+
+    return query(sql, params);
+  };
+
+  let deleteLinkById = linkId => {
+    let { sql, params } = createQuery`
+      delete from link where id = ${linkId};
+    `;
+
+    return query(sql, params);
   };
 
   return {
     getLinks,
-    addLink
+    addLink,
+    updateLink,
+    deleteLinkById
   };
 };
 
