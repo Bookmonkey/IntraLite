@@ -1,6 +1,6 @@
 const pg = require("pg");
 
-const DATABASE = require("../config").DB_CONNECTION;
+const DATABASE = require("../settings").DB_CONNECTION;
 let pool = new pg.Pool(DATABASE);
 
 pool.on("error", (err, client) => {
@@ -55,13 +55,26 @@ let db = () => {
       link = ${link.link}
       where id = ${link.id};
     `;
-
+    
     return query(sql, params);
   };
 
   let deleteLinkById = linkId => {
+    let { sql, params } = createQuery`delete from link where id = ${linkId};`;
+    return query(sql, params);
+  };
+
+  let getSettings = () => {
+    let { sql, params } = createQuery`select * from settings;`;
+    return query(sql, params);
+  };
+
+
+  let updateSettings = settings => {
     let { sql, params } = createQuery`
-      delete from link where id = ${linkId};
+      update settings set 
+        title = ${settings.title},
+        logo_image = ${settings.logo_image};
     `;
 
     return query(sql, params);
@@ -71,7 +84,9 @@ let db = () => {
     getLinks,
     addLink,
     updateLink,
-    deleteLinkById
+    deleteLinkById,
+    getSettings,
+    updateSettings
   };
 };
 

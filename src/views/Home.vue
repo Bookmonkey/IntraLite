@@ -1,13 +1,11 @@
 <template>
   <div class="home">
-    <div class="overlay" :class="getTheme()"></div>
+    <div class="overlay" :class="theme"></div>
     <div class="content">
 
       <div class="content-between mb-1">
-        <div class="title">Quick links</div>
-        <div class="btn blue" @click="openModal(modalOptions.selectedLink, 'add')" v-if="editState">
-          Add
-        </div>
+        <img :src="settings.logo_image"/>
+        <div class="title"> {{ settings.title }}</div>
       </div>
 
       <div class="alert" v-if="links.length === 0">
@@ -26,14 +24,19 @@
         </div> 
       </div>
 
+      <div class="content-around">
+        <div class="btn blue" @click="openModal(modalOptions.selectedLink, 'add')" v-if="editState">
+          Add
+        </div>
+      </div>
     </div>
     <modal :options="modalOptions" v-if="modalOptions.visible"></modal>
 
 
-    <div class="footer">
+    <div class="footer" v-if="editState">
       <div class="footer-links">
-        <a href="/#/config">Settings</a>
-        <a href="/#/about">About</a>
+        <a href="/#/settings">Settings</a>
+        <!-- <a href="/#/about">About</a> -->
       </div>
     </div>
   </div>
@@ -43,7 +46,7 @@
 // @ is an alias to /src
 import Modal from "@/components/Modal.vue";
 
-import { mapState, mapMutations, mapGetters } from 'vuex';
+import { mapState, mapMutations, mapGetters, mapActions } from 'vuex';
 export default {
   name: "home",
   components: {
@@ -51,6 +54,8 @@ export default {
   },
   data() {
     return {
+      // theme: 'theme-green',
+      settings: {},
       linkTemplate: {
         id: 0,
         link_name: '',
@@ -67,15 +72,17 @@ export default {
   },
   created() {
     this.getLinks();
+    this.getSettings()
+    .then(settings => {
+      this.settings = settings;
+    });
 
     let setTheme = localStorage.getItem('theme');
-
-    console.log(setTheme);
     if(setTheme) {
-      this.config.theme = setTheme;
+      this.theme = setTheme;
     }
     else {
-      this.config.theme = 'default';
+      this.theme = 'theme-green';
     }
 
     // for internal usecase. Will actually implement a token system
@@ -83,6 +90,7 @@ export default {
   },
   methods: {
     ...mapMutations(['getLinks']),
+    ...mapActions(['getSettings', "getTheme"]),
     openModal(link, state) {
       this.modalOptions.selectedLink = link;
       this.modalOptions.state  = state;
@@ -92,12 +100,8 @@ export default {
 
       this.modalOptions.visible = true;
     },
-    getTheme () {
-      return this.config.theme;
-    }
   },
   computed: {
-    ...mapGetters(['config']),
     ...mapState({
       links: state => state.links,
     })
@@ -113,23 +117,17 @@ export default {
   justify-content: space-around;
 }
 
+img {
+  width: 128px;
+  height: 128px;
+}
+
 .overlay {
   position: absolute;
   top: 0;
   left: 0;
   width: 100vw;
   height: 100vh;
-
-  &.theme-default {
-    background: #f5f7f9;
-  }
-  &.theme-blue {
-    background:#0099FF;
-  }
-
-  &.theme-green {
-    background:#66bb6a;
-  }
 
   &.theme-sea-blue {
     // background: linear-gradient(90deg, #0099FF 0%, #6610f2 100%);

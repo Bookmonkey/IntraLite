@@ -1,7 +1,7 @@
 import Vue from "vue";
 import Router from "vue-router";
 import Home from "./views/Home.vue";
-import Config from "@/views/Config.vue";
+import Settings from "@/views/Settings.vue";
 
 Vue.use(Router);
 
@@ -22,9 +22,9 @@ export default new Router({
         import(/* webpackChunkName: "about" */ "./views/About.vue")
     },
     {
-      path: "/config",
-      name: "config",
-      component: Config
+      path: "/settings",
+      name: "settings",
+      component: Settings
     }
   ]
 });

@@ -11,11 +11,13 @@ export default new Vuex.Store({
     themes: [
       { key: "theme-default", name: "Default" },
       { key: "theme-green", name: "Green" },
-      { key: "theme-blue", name: "Blue" }
+      { key: "theme-blue", name: "Blue" },
+      { key: "theme-yellow", name: "Yellow" },
+      { key: "theme-purple", name: "Purple" },
+      { key: "theme-orange", name: "Orange" }
     ],
-    config: {
-      theme: "theme-default"
-    }
+    theme: "theme-default",
+    settings: {}
   },
   getters: {
     listLength: state => {
@@ -25,9 +27,6 @@ export default new Vuex.Store({
       return state.themes;
     },
 
-    config: state => {
-      return state.config;
-    }
   },
   mutations: {
     getLinks(state) {
@@ -53,10 +52,35 @@ export default new Vuex.Store({
         // state.links.splice(index, 1);
       });
     },
-    mutateTheme(state, theme) {
-      Vue.set(state.config, "theme", theme);
-    }
+    setTheme(state, theme) {
+      state.theme = theme;
+    },
+    updateSettings(state, settings) {
+      Vue.set(state.settings, 'logo_image', settings.logo_image);
+      Vue.set(state.settings, 'title', settings.title);
+    },
   },
   actions: {
+    getSettings(context) {
+      return axios.get(`${API}/api/settings/get`)
+      .then(response => {
+        context.commit("updateSettings", response.data[0]);
+        return response.data[0];
+      });
+    },
+    updateSettings(context, settings) {
+      context.commit("updateSettings", settings);
+      return axios.post(`${API}/api/settings/update`, { settings })
+      .then(response => response.data[0]);
+    },
+    
+    getTheme(context) {
+      let theme = localStorage.getItem("theme");
+      context.commit("setTheme", theme);
+    },
+    updateTheme(context, theme) {
+      localStorage.setItem("theme", theme);
+      context.commit("setTheme", theme);
+    }
   }
 });

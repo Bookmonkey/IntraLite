@@ -4,10 +4,13 @@ $blue: #409EFF;
 $lightblue: #d1e4ff;
 $green: #67C23A;
 $red: #F56C6C;
+$yellow: #F5F56C;
+$purple: #C35696;
 
 
 @import 'alert';
 @import 'form';
+@import 'themes';
 
 body, html {
   padding: 0;
@@ -21,6 +24,19 @@ body, html {
   display: flex;
   justify-content: space-between;
   align-items: center;
+}
+
+.content-around {
+  display:flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.float-left {
+  float:left;
+}
+.float-right {
+  float:right;
 }
 
 

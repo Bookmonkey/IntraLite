@@ -1,0 +1,15 @@
+$themeBlue: #39508B;
+$themePurple: #6E248E;
+$themeGreen: #38A33F;
+$themeYellow: #FFE500;
+$themeOrange: #D5892F;
+$themeRed: #CF4A47;
+
+.overlay{
+  &.theme-default { background: #f5f7f9; }
+  &.theme-blue { background: $themeBlue; }
+  &.theme-green { background: $themeGreen; }
+  &.theme-yellow { background: $themeYellow; }
+  &.theme-orange { background: $themeOrange; }
+  &.theme-purple { background: $themePurple; }
+}

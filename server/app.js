@@ -1,8 +1,3 @@
-// var https = require("https");
-
-// var fs = require("fs");
-
-
 const express = require("express");
 
 let app = express();
@@ -40,38 +35,11 @@ app.use("/scripts", express.static(path.join(__dirname, "/node_modules")));
 app.engine("html", require("ejs").renderFile);
 app.set("views", __dirname + "/");
 app.set("view engine", "ejs"); // set up templates
-
-var date = new Date();
-date.setTime(date.getTime() + 5 * 24 * 60 * 60 * 1000);
-
-// app.use(
-//   session({
-//     secret: "pass%**$dgdjsjdidkw##%@#5"
-//     // cookie: {maxAge: date}
-//   })
-// ); // session secret
-
-
-// Handles the errors
-// require('./server/routes/errors.js')(app);
-
 const LinksController = require("./api/links");
-// const SettingsController = require("./api/settings");
+const SettingsController = require("./api/settings");
 
 app.use("/api/links", LinksController);
-// app.use("/api/settings", SettingsController);
-
-// app.get("/api/links", (req, res) => {
-//   const links = [{
-//     id: 0,
-//     link: "https://management.freshco.co.nz",
-//     name: "Management application"
-//   }];
-
-//   res.status(200).send(links);
-// })
-
-// require("./server/routes")(app, passport, Moment);
+app.use("/api/settings", SettingsController);
 
 app.listen(port);
 

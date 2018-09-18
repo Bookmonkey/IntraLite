@@ -3,9 +3,10 @@ create database quicklinksintranet;
 
 use quicklinksintranet;
 
--- create table config (
-
--- );
+create table config (
+  title text,
+  logo_image text,
+);
 
 create table link (
   id serial PRIMARY KEY,
@@ -13,3 +14,7 @@ create table link (
   link_name text not null,
   is_external_link boolean not null
 );
+
+
+
+insert into config (title) VALUES ('Quick links');
