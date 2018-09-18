@@ -3,7 +3,7 @@ create database quicklinksintranet;
 
 use quicklinksintranet;
 
-create table config (
+create table settings (
   title text,
   logo_image text,
 );
@@ -17,4 +17,4 @@ create table link (
 
 
 
-insert into config (title) VALUES ('Quick links');
+insert into settings (title) VALUES ('Quick links');

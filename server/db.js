@@ -1,6 +1,6 @@
 const pg = require("pg");
 
-const DATABASE = require("../settings").DB_CONNECTION;
+const DATABASE = require("../config").DB_CONNECTION;
 let pool = new pg.Pool(DATABASE);
 
 pool.on("error", (err, client) => {
