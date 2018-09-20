@@ -81,12 +81,19 @@ let db = () => {
   };
 
   return {
-    getLinks,
-    addLink,
-    updateLink,
-    deleteLinkById,
-    getSettings,
-    updateSettings
+    Links: {
+      getLinks,
+      addLink,
+      updateLink,
+      deleteLinkById,
+    },
+    Settings: {
+      getSettings,
+      updateSettings
+    },
+    Notices: {
+
+    }
   };
 };
 

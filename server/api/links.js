@@ -5,14 +5,14 @@ const db = require("../db");
 
 const LinksController = () => {
   router.get("/get", async (req, res) => {
-    let results = await db.getLinks();
+    let results = await db.Links.getLinks();
     res.status(200).send(results);
   });
 
   router.post("/add", async (req, res) => {
     let link = req.body.link;
     try {
-      let result = await db.addLink(link);
+      let result = await db.Links.addLink(link);
       res.status(200).send(result);
     } catch (error) {
       console.error(error);
@@ -22,7 +22,7 @@ const LinksController = () => {
   router.post("/update", async (req, res) => {
     let link = req.body.link;
     try {
-      await db.updateLink(link);
+      await db.Links.updateLink(link);
       res.status(200).send("OK");
     } catch (error) {
       console.error(error);
@@ -31,10 +31,10 @@ const LinksController = () => {
 
   });
 
-  router.delete("/delete/:id", async (req, res) => {
+  router.get("/delete/:id", async (req, res) => {
     let id = req.params.id;
     try {
-      await db.deleteLinkById(id);
+      await db.Links.deleteLinkById(id);
       res.status(200).send("OK");
     } catch (error) {
       console.error(error);

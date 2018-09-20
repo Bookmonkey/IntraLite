@@ -28,7 +28,7 @@
         <div class="content-between">
           <div>
 
-            <button class="btn red"  v-if="options.state === 'edit'" @click="deleteLink(options.selectedLink.id)">Delete</button>
+            <button class="btn red"  v-if="options.state === 'edit'" @click="promptDelete(options.selectedLink.id)">Delete</button>
           </div>
           <button class="btn green" @click="saveLink()">Save</button>
         </div>
@@ -38,7 +38,7 @@
 </template>
 
 <script>
-import { mapMutations, mapGetters } from 'vuex';
+import { mapMutations, mapGetters, mapActions } from 'vuex';
 
 export default {
   props: ['options'],
@@ -57,10 +57,19 @@ export default {
     document.removeEventListener('keydown');
   },
   methods: {
-    ...mapMutations(['addLink', 'updateLink', 'deleteLink']),
+    ...mapMutations(['addLink', 'updateLink']),
+    ...mapActions(['deleteLink']),
     closeModal() {
       this.options.visible = false;
       this.options.selectedLink = {};
+    },
+
+    promptDelete(id) {
+      this.deleteLink(id)
+      .then(response => {
+        this.options.visible = false;
+        this.options.selectedLink = {};
+      });
     },
 
     saveLink() {

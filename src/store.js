@@ -2,7 +2,11 @@ import Vue from "vue";
 import Vuex from "vuex";
 import axios from "axios";
 
-const API = "http://localhost:3000";
+import Utils from "./utils";
+
+const ENV = process.env.NODE_ENV;
+const API = Utils.getAPIPath(ENV);
+
 Vue.use(Vuex);
 
 export default new Vuex.Store({
@@ -46,10 +50,11 @@ export default new Vuex.Store({
         console.log(result);
       });
     },
-    deleteLink(state, id) {
-      axios.delete(`${API}/api/links/delete/${id}`)
+    deleteLinkFromState(state, id) {
+      state.links = state.links.filter(ele => ele.id != id);
+      return axios.get(`${API}/api/links/delete/${id}`)
       .then(result => {
-        // state.links.splice(index, 1);
+        return true;  
       });
     },
     setTheme(state, theme) {
@@ -81,6 +86,13 @@ export default new Vuex.Store({
     updateTheme(context, theme) {
       localStorage.setItem("theme", theme);
       context.commit("setTheme", theme);
+    },
+    deleteLink(context, id) {
+      return axios.get(`${API}/api/links/delete/${id}`)
+      .then(result => {
+        context.commit("deleteLinkFromState", id);
+        return true;
+      });
     }
   }
 });
