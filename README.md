@@ -1,5 +1,9 @@
-# quicklinks
-A small intranet designed to show quick links that are useful for the business. This will grow out to include more features in the future.
+# IntraLite
+A small intranet designed to show useful information to someone. IE links and noticeboard(s). 
+
+### Roadmap
+* Noticeboard
+* Move API to .netCore
 
 ### Tooling
 NodeJS, VueJS, PostgreSQL
