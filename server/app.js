@@ -31,6 +31,16 @@ var path = require("path");
 app.use("/scripts", express.static(path.join(__dirname, "/node_modules")));
 // app.use('/scripts', express.static(__dirname + '/node_modules'));
 
+const PATHS = {
+  JS: path.join(__dirname, '..', 'dist', 'js'),
+  CSS: path.join(__dirname, '..', 'dist', 'css'),
+}
+
+// console.log(newPath);
+app.use("/js", express.static(path.join(PATHS.JS)));
+app.use("/css", express.static(path.join(PATHS.CSS)));
+app.use("/", express.static(path.join(__dirname, '..', 'dist')));
+
 // Allows the .html suffix and renders by using ejs.
 app.engine("html", require("ejs").renderFile);
 app.set("views", __dirname + "/");
@@ -40,6 +50,13 @@ const SettingsController = require("./api/settings");
 
 app.use("/api/links", LinksController);
 app.use("/api/settings", SettingsController);
+
+
+if(process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging') {
+  app.get("/", (req, res, next) => {
+    res.render("../dist/index.html");
+  })
+}
 
 app.listen(port);
 

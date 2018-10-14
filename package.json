@@ -7,7 +7,8 @@
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "dev": "cross-env NODE_ENV=dev node ./server/app.js",
-    "production": "cross-env NODE_ENV=production node ./dist/app.js"
+    "staging": "cross-env NODE_ENV=staging node ./server/app.js",
+    "production": "cross-env NODE_ENV=production node ./server/app.js"
   },
   "dependencies": {
     "axios": "^0.18.0",

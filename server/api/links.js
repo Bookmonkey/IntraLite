@@ -27,8 +27,6 @@ const LinksController = () => {
     } catch (error) {
       console.error(error);
     }
-
-
   });
 
   router.get("/delete/:id", async (req, res) => {

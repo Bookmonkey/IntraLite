@@ -2,10 +2,10 @@ import Vue from "vue";
 import Vuex from "vuex";
 import axios from "axios";
 
-import Utils from "./utils";
+// import Utils from "./utils";
 
-const ENV = process.env.NODE_ENV;
-const API = Utils.getAPIPath(ENV);
+const API = "http://localhost:3000";
+// const API = "http://10.100.20.155";
 
 Vue.use(Vuex);
 

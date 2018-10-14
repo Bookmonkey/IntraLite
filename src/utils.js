@@ -6,9 +6,11 @@ function getAPIPath(ENV) {
       break;
 
     case "production":
+      return "http://10.100.20.155:8080";
       return
 
-    case "production_host":
+    case "staging":
+      return "http://localhost:8080";
       return;
 
     default:
