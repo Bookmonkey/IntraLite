@@ -16,7 +16,7 @@
 
         <div class="group">
           <div class="alert alert-yellow" v-if="options.selectedLink.link_type === 'private'">
-            This link will only be seen by you.
+            This link will only be visible to you on this computer. 
           </div>
         </div>
         
