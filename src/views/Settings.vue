@@ -8,28 +8,6 @@
       </ul>
     </div>
     <div class="settings-content">
-
-      <div class="group">
-        <label for="title">Title</label>
-        <input type="text" v-model="settings.title"/>
-      </div>
-
-      <div class="group">
-        
-            <!-- <label for="image">Logo</label>
-            <input type="file" class="inputfile" @change="processFile($event)">
-
-            Upload a file -->
-        <div>
-          <label>Logo</label>
-          <input type="file" name="file" id="file" class="inputfile" @change="processFile($event)" />
-          <label for="file">
-            <i class="fas fa-fw fa-upload"></i>
-            Choose a file
-          </label>
-        </div>
-        <img src="" class="img-preview" alt="">
-      </div>
       <div class="group">
         <label for="theme">Theme</label>
         <select v-model="selectedTheme">
@@ -37,9 +15,35 @@
         </select> 
       </div>
 
+      <div v-if="adminState">
+        <hr>
+        <div class="group">
+          <label for="title">Title</label>
+          <input type="text" v-model="settings.title"/>
+        </div>
+        <div class="group">
+
+          <div>
+            <label>Logo</label>
+            <input type="file" name="file" id="file" class="inputfile" @change="processFile($event)" />
+            <label for="file">
+              <i class="fas fa-fw fa-upload"></i>
+              Choose a file
+            </label>
+          </div>
+          <img src="" class="img-preview" alt="">
+        </div>
+      </div>
+      
+      <div class="group">
+        <div class="alert alert-green" v-if="savedChanges">Saved changes</div>
+      </div>
+
       <div class="group">
         <button class="btn green" @click="saveChanges()">Save</button>
       </div>
+
+
     </div>
   </div>
 </template>
@@ -53,6 +57,8 @@ export default {
       settings: {},
       selectedTheme: '',
       showPreview: false,
+      adminState: false,
+      savedChanges: false,
     }
   },
   methods: {
@@ -64,6 +70,13 @@ export default {
     saveChanges() {
       this.updateTheme(this.selectedTheme);
       this.updateSettings(this.settings);
+
+
+      this.savedChanges = true;
+
+      setTimeout(() => {
+        this.savedChanges = false;
+      }, 3000);
     },
     processFile(event) {
       let file = event.target.files[0];
@@ -89,6 +102,10 @@ export default {
       this.settings = settings;
       this.setImagePreview(this.settings.logo_image);
     });
+
+
+    // for internal usecase. Will actually implement a token system
+    if(this.$route.query.admin) this.adminState = true;
   },
   computed: {
     ...mapGetters(['themes']),

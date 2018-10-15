@@ -17,7 +17,7 @@
             <a :href="link.link" target="_blank">
               {{ link.link_name }}
             </a>
-            <div class="btn" @click="openModal(link, 'edit')" v-if="editState">
+            <div class="btn" @click="openModal(link, 'edit')">
               <i class="fas fa-edit"></i>
             </div>
           </div>
@@ -25,7 +25,7 @@
       </div>
 
       <div class="content-around">
-        <div class="btn blue" @click="openModal(modalOptions.selectedLink, 'add')" v-if="editState">
+        <div class="btn blue" @click="openModal(modalOptions.selectedLink, 'add')">
           Add
         </div>
       </div>
@@ -33,7 +33,7 @@
     <modal :options="modalOptions" v-if="modalOptions.visible"></modal>
 
 
-    <div class="footer" v-if="editState">
+    <div class="footer">
       <div class="footer-links">
         <a href="/#/settings">Settings</a>
         <!-- <a href="/#/about">About</a> -->
@@ -67,7 +67,6 @@ export default {
         visible: false,
         state: 'add',
       },
-      editState: false,
     };
   },
   created() {
@@ -84,9 +83,6 @@ export default {
     else {
       this.theme = 'theme-green';
     }
-
-    // for internal usecase. Will actually implement a token system
-    if(this.$route.query.edit) this.editState = true;
   },
   methods: {
     ...mapMutations(['getLinks']),
