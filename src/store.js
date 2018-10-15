@@ -4,8 +4,8 @@ import axios from "axios";
 
 // import Utils from "./utils";
 
-const API = "http://localhost:3000";
-// const API = "http://10.100.20.155";
+// const API = "http://localhost:3000";
+const API = "http://10.100.20.155:8080";
 
 Vue.use(Vuex);
 
@@ -34,6 +34,7 @@ export default new Vuex.Store({
   },
   mutations: {
     getLinks(state) {
+      console.log(`${API}/api/links/get`)
       axios.get(`${API}/api/links/get`).then(result => {
         state.links = result.data;
       });

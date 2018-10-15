@@ -1,7 +1,7 @@
 const express = require("express");
 
 let app = express();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 8080;
 
 const morgan = require("morgan");
 const cookieParser = require("cookie-parser");
@@ -10,8 +10,10 @@ const bodyParser = require("body-parser");
 const helmet = require("helmet");
 app.use(helmet());
 
-const cors = require("cors");
-app.use(cors());
+// if(process.env.NODE_ENV === 'dev') {
+// 	const cors = require("cors");
+// 	app.use(cors());
+// }
 
 const compression = require("compression");
 app.use(compression());
@@ -48,15 +50,24 @@ app.set("view engine", "ejs"); // set up templates
 const LinksController = require("./api/links");
 const SettingsController = require("./api/settings");
 
-app.use("/api/links", LinksController);
-app.use("/api/settings", SettingsController);
-
 
 if(process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging') {
   app.get("/", (req, res, next) => {
     res.render("../dist/index.html");
-  })
+  });
+
+
 }
+
+app.use(function(req, res, next) {
+	res.header("Access-Control-Allow-Origin", "*");
+	res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+	next();
+});
+
+app.use("/api/links", LinksController);
+app.use("/api/settings", SettingsController);
+
 
 app.listen(port);
 
