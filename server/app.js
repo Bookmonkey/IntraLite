@@ -51,19 +51,11 @@ const LinksController = require("./api/links");
 const SettingsController = require("./api/settings");
 
 
-if(process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'staging') {
+if(process.env.NODE_ENV === 'production') {
   app.get("/", (req, res, next) => {
     res.render("../dist/index.html");
   });
-
-
 }
-
-app.use(function(req, res, next) {
-	res.header("Access-Control-Allow-Origin", "*");
-	res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-	next();
-});
 
 app.use("/api/links", LinksController);
 app.use("/api/settings", SettingsController);
