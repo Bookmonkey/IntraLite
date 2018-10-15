@@ -2,10 +2,7 @@ import Vue from "vue";
 import Vuex from "vuex";
 import axios from "axios";
 
-// import Utils from "./utils";
-
-// const API = "http://localhost:3000";
-const API = "http://10.100.20.155:8080";
+const API = require("../config").API;
 
 Vue.use(Vuex);
 

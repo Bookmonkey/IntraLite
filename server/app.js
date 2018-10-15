@@ -1,7 +1,7 @@
 const express = require("express");
 
 let app = express();
-const port = process.env.PORT || 8080;
+const port = 8080;
 
 const morgan = require("morgan");
 const cookieParser = require("cookie-parser");
@@ -10,10 +10,10 @@ const bodyParser = require("body-parser");
 const helmet = require("helmet");
 app.use(helmet());
 
-// if(process.env.NODE_ENV === 'dev') {
-// 	const cors = require("cors");
-// 	app.use(cors());
-// }
+if(process.env.NODE_ENV === 'dev') {
+	const cors = require("cors");
+	app.use(cors());
+}
 
 const compression = require("compression");
 app.use(compression());
