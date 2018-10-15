@@ -13,6 +13,12 @@
             <i class="fas fa-fw fa-times"></i>
           </button>
         </div>
+
+        <div class="group">
+          <div class="alert alert-yellow" v-if="options.selectedLink.link_type === 'private'">
+            This link will only be seen by you.
+          </div>
+        </div>
         
         <div class="group">
           <label for="name">Link title</label>
@@ -22,6 +28,14 @@
         <div class="group">
           <label for="link">Link</label>
           <input type="url" v-model="options.selectedLink.link" />
+        </div>
+
+        <div class="group">
+          <label for="linkType">Type</label>
+          <select v-model="options.selectedLink.link_type">
+            <option value="public" selected>Public link</option>
+            <option value="private">Private link - Only you can see this link</option>
+          </select>
         </div>
     
 
@@ -73,6 +87,23 @@ export default {
     },
 
     saveLink() {
+      if(this.options.selectedLink.link_type === 'private') {
+        this.savePrivateLink();
+      }
+      else {
+        this.savePublicLink();
+      }
+    
+      this.closeModal();
+    },
+
+
+    savePrivateLink() {
+      let privateItems = [];
+      privateItems.push(this.options.selectedLink);
+      localStorage.setItem('privateLinks', JSON.stringify(privateItems));
+    },
+    savePublicLink(){
       if(this.options.state === 'edit') {
         this.updateLink(this.options.selectedLink);
       }
@@ -80,8 +111,6 @@ export default {
       else {
         this.addLink(this.options.selectedLink);
       }
-    
-      this.closeModal();
     }
   },
 

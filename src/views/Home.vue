@@ -24,9 +24,29 @@
         </div> 
       </div>
 
+
+    
+      <div class="private-links-title content-between" @click="collapsePrivateLinks()">
+        Your private links.
+
+        <i class="fa fa-fw" :class="{ 'fa-angle-up': showPrivateLinks, 'fa-angle-down': !showPrivateLinks }"></i>
+      </div>
+      <div class="link-container" v-if="showPrivateLinks">
+        <div class="link" v-for="(link, index) in privateLinks" :key="index">
+          <div class="content-between">
+            <a :href="link.link" target="_blank">
+              {{ link.link_name }}
+            </a>
+            <div class="btn" @click="openModal(link, 'edit')">
+              <i class="fas fa-edit"></i>
+            </div>
+          </div>
+        </div> 
+      </div>
+
       <div class="content-around">
         <div class="btn blue" @click="openModal(modalOptions.selectedLink, 'add')">
-          Add
+          Add link
         </div>
       </div>
     </div>
@@ -45,12 +65,14 @@
 <script>
 // @ is an alias to /src
 import Modal from "@/components/Modal.vue";
+import List from "@/components/List.vue";
 
 import { mapState, mapMutations, mapGetters, mapActions } from 'vuex';
 export default {
   name: "home",
   components: {
-    Modal
+    Modal,
+    List
   },
   data() {
     return {
@@ -60,6 +82,7 @@ export default {
         id: 0,
         link_name: '',
         link: '',
+        link_type: 'public',
         visible: false,
       },
       modalOptions: {
@@ -67,10 +90,14 @@ export default {
         visible: false,
         state: 'add',
       },
+
+      privateLinks: [],
+      showPrivateLinks: false,
     };
   },
   created() {
     this.getLinks();
+    this.getPrivateLinks();
     this.getSettings()
     .then(settings => {
       this.settings = settings;
@@ -91,11 +118,18 @@ export default {
       this.modalOptions.selectedLink = link;
       this.modalOptions.state  = state;
       if(state === 'add') {
-        this.modalOptions.selectedLink = JSON.parse(JSON.stringify(this.linkTemplate));
+        this.modalOptions.selectedLink = this.linkTemplate;
       }
 
       this.modalOptions.visible = true;
     },
+
+    getPrivateLinks() {
+      this.privateLinks = JSON.parse(localStorage.getItem('privateLinks'));
+    },
+    collapsePrivateLinks() {
+      this.showPrivateLinks = !this.showPrivateLinks;
+    }
   },
   computed: {
     ...mapState({
@@ -159,7 +193,13 @@ img {
   font-size: .9rem;
 
   a {
-    padding: 12px;
+    padding: 0px;
   }
+}
+
+.private-links-title {
+  margin: 0;
+  padding: 8px 0;
+  font-size: 1.2rem;
 }
 </style>
